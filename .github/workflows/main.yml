@@ -23,12 +23,13 @@ jobs:
         run: |
           if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
           npm ci
+          npx prisma generate
 
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: .next/cache
-          key: npm-${{ runner.os }}
+          key: nextjs-npm-${{ runner.os }}
 
       - name: Run Tests
         run: npx vitest run
