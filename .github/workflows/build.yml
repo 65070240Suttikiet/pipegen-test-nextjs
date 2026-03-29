@@ -1,6 +1,6 @@
 name: My-Pipeline
 'on':
-  push:
+  pull_request:
     branches:
       - main
 jobs:
@@ -14,12 +14,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install Dependencies
         run: |
           if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
-          npm install
+          npm ci
 
       - name: Build Project
         run: npm run build
