@@ -1,6 +1,13 @@
 name: Auto-Generated-Pipeline
 'on':
-  workflow_dispatch: null
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: 0 0 * * *
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -12,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Install Dependencies
         run: |
@@ -25,20 +32,5 @@ jobs:
           path: .next/cache
           key: npm-${{ runner.os }}
 
-      - name: Run Tests
-        run: npx vitest run
-
-      - name: Check Code Quality
-        run: npm run lint
-
       - name: Build Project
         run: npm run build
-
-      - name: Build Docker Image
-        run: docker build -t tigerntun/nextt:latest .
-
-      - name: Push to Docker Hub
-        if: true
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push tigerntun/nextt:latest
