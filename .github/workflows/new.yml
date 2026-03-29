@@ -1,0 +1,37 @@
+name: My-Pipeline
+'on':
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
+          npm ci
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-npm-${{ runner.os }}
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Project
+        run: npm run build
