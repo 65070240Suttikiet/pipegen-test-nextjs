@@ -23,13 +23,12 @@ jobs:
         run: |
           if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
           npm ci
-          npx prisma generate
 
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: .next/cache
-          key: nextjs-npm-${{ runner.os }}
+          key: npm-${{ runner.os }}
 
       - name: Run Tests
         run: npx vitest run
@@ -41,13 +40,13 @@ jobs:
         run: npm run build
 
       - name: Build Docker Image
-        run: docker build -t username/repo:latest .
+        run: docker build -t tigerntun/hello:latest .
 
       - name: Push to Docker Hub
         if: true
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push username/repo:latest
+          echo "docker build -t username/repo:latest ." | docker login -u "docker build -t username/repo:latest ." --password-stdin
+          docker push tigerntun/hello:latest
 
       - name: Notify Slack
         if: always()
