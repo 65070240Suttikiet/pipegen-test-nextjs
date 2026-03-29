@@ -1,8 +1,6 @@
 name: My-Pipeline
 'on':
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch: null
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -19,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
-          npm ci
+          npm install
 
       - name: Build Project
         run: npm run build
