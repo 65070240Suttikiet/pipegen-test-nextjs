@@ -40,10 +40,10 @@ jobs:
         run: npm run build
 
       - name: Build Docker Image
-        run: docker build -t username/repo:latest -f backend/Dockerfile ./backend
+        run: docker build -t tigerntun/repo:latest -f backend/Dockerfile ./backend
 
       - name: Push to Docker Hub
         if: true
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push username/repo:latest
+          docker push tigerntun/repo:latest
